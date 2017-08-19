@@ -8,45 +8,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MandelbrotSet.Annotations;
+using MandelbrotSet.Model;
 
 namespace MandelbrotSet
 {
 
     public class MandelbrotViewModel : IMandelbrotSetViewModel, INotifyPropertyChanged
     {
-        #region Properties
-        private double realStart = -2, realEnd = 1, imaginaryStart = -1, imaginaryEnd = 1;
-
-        public double RealStart
-        {
-            get => realStart;
-            set { realStart = value; OnPropertyChanged(nameof(RealStart)); }
-        }
-        public double RealEnd
-        {
-            get => realEnd;
-            set { realEnd = value; OnPropertyChanged(nameof(RealEnd)); }
-        }
-        public double ImaginaryStart
-        {
-            get => imaginaryStart;
-            set { imaginaryStart = value; OnPropertyChanged(nameof(ImaginaryStart)); }
-        }
-        public double ImaginaryEnd
-        {
-            get => imaginaryEnd;
-            set { imaginaryEnd = value; OnPropertyChanged(nameof(ImaginaryEnd)); }
-        }
-
-
-
-        #endregion
+        public MandelbrotMap Map { get; set; }
 
         public Command<MouseDragEvent> OnDrag { get; }
 
-        private int counter = 0;
         public MandelbrotViewModel()
         {
+            Map = new MandelbrotMap(900, 700, -2, 1, -1, 1);
             //OnDrag = new Command<MouseDragEvent>(
             //    dragEvent =>
             //    {

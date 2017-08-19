@@ -25,7 +25,6 @@ namespace MandelbrotSet
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MandelbrotViewModel();
         }
     }
 }

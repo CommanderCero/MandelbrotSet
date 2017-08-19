@@ -4,14 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MandelbrotSet"
+        xmlns:VM="clr-namespace:MandelbrotSet"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="940">
+    <Window.DataContext>
+        <VM:MandelbrotViewModel />
+    </Window.DataContext>
     <Grid>
-        <local:MandelbrotSetView Grid.Column="0" x:Name="MandelbrotSetView" 
-                                 RealStart="{Binding RealStart}" 
-                                 RealEnd="{Binding RealEnd}"
-                                 ImaginaryStart="{Binding ImaginaryStart}"
-                                 ImaginaryEnd="{Binding ImaginaryEnd}">
+        <local:MandelbrotSetView Grid.Column="0" x:Name="MandelbrotSetView" Map="{Binding Map}">
         </local:MandelbrotSetView>
     </Grid>
 </Window>

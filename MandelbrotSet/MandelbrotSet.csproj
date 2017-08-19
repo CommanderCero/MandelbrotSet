@@ -79,7 +79,7 @@
       <DependentUpon>MandelbrotSetView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MandelbrotViewModel.cs" />
-    <Compile Include="Model\MandelbrotHelper.cs" />
+    <Compile Include="Model\MandelbrotMap.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -12,10 +12,7 @@ namespace MandelbrotSet
 {
     public interface IMandelbrotSetViewModel
     {
-        double RealStart { get; set; }
-        double RealEnd { get; set; }
-        double ImaginaryStart { get; set; }
-        double ImaginaryEnd { get; set; }
+        MandelbrotMap Map { get; }
 
         Command<MouseDragEvent> OnDrag { get; }
     }
@@ -35,18 +32,8 @@ namespace MandelbrotSet
     public partial class MandelbrotSetView : UserControl
     {
         #region DependencyProperties
-        public static readonly DependencyProperty RealStartProperty = 
-           DependencyProperty.Register("RealStart", typeof(double), typeof(MandelbrotSetView), new PropertyMetadata(-2.0, PropertyChangedCallback));
-
-        public static readonly DependencyProperty RealEndProperty =
-            DependencyProperty.Register("RealEnd", typeof(double), typeof(MandelbrotSetView), new PropertyMetadata(1.0, PropertyChangedCallback));
-
-        public static readonly DependencyProperty ImaginaryStartProperty =
-            DependencyProperty.Register("ImaginaryStart", typeof(double), typeof(MandelbrotSetView), new PropertyMetadata(-1.0, PropertyChangedCallback));
-
-        public static readonly DependencyProperty ImaginaryEndProperty =
-            DependencyProperty.Register("ImaginaryEnd", typeof(double), typeof(MandelbrotSetView), new PropertyMetadata(1.0, PropertyChangedCallback));
-
+        public static readonly DependencyProperty MapProperty = 
+            DependencyProperty.Register("Map", typeof(MandelbrotMap), typeof(MandelbrotSetView), new PropertyMetadata(null, PropertyChangedCallback));
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             if(dependencyObject is MandelbrotSetView obj)
@@ -55,28 +42,10 @@ namespace MandelbrotSet
             }
         }
 
-        public double RealStart
+        public MandelbrotMap Map
         {
-            get => (double)GetValue(RealStartProperty);
-            set => SetValue(RealStartProperty, value);
-        }
-
-        public double RealEnd
-        {
-            get => (double)GetValue(RealEndProperty);
-            set => SetValue(RealEndProperty, value);
-        }
-
-        public double ImaginaryStart
-        {
-            get => (double)GetValue(ImaginaryStartProperty);
-            set => SetValue(ImaginaryStartProperty, value);
-        }
-
-        public double ImaginaryEnd
-        {
-            get => (double)GetValue(ImaginaryEndProperty);
-            set => SetValue(ImaginaryEndProperty, value);
+            get => (MandelbrotMap) GetValue(MapProperty);
+            set => SetValue(MapProperty, value);
         }
         #endregion
 
@@ -95,26 +64,29 @@ namespace MandelbrotSet
         {
             if (!IsLoaded)
                 return;
+            if (Map == null)
+            {
+                Display.Source = null;
+                return;
+            }
 
             //Initialize image and stuff
-            var width = (int)ActualWidth;
-            var height = (int)ActualHeight;
+            var width = Map.MapWidth;
+            var height = Map.MapHeight;
             var nStride = (width * PixelFormats.Bgra32.BitsPerPixel + 7) / 8;
             var ImageDimentions = new Int32Rect(0, 0, width, height);
             var ImageArr = new byte[height * nStride];
 
             //Calculate stepsize
-            var map = MandelbrotHelper.Generate2DMap(width, height, RealStart, RealEnd, ImaginaryStart, ImaginaryEnd);
-            var dre = (RealEnd - RealStart) / width;
-            var dim = (ImaginaryEnd - ImaginaryStart) / height;
+            var map = Map.Map;
             for (var x = 0; x < width; x++)
             {
                 for (var y = 0; y < height; y++)
                 {
                     var index = (y * width + x) * 4;
                     var m = map[y][x];
-                    var t = (255 * m / MandelbrotHelper.MaximumIterations);
-                    var color = 255 - (int)(m * 255.0 / MandelbrotHelper.MaximumIterations);
+                    var t = (255 * m / MandelbrotMap.MaximumIterations);
+                    var color = 255 - (int)(m * 255.0 / MandelbrotMap.MaximumIterations);
 
                     ImageArr[index + 0] = (byte)color;   //Blue
                     ImageArr[index + 1] = (byte)color;   //Green
