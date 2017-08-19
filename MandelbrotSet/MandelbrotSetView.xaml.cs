@@ -1,16 +1,37 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MandelbrotSet.Model;
 
 namespace MandelbrotSet
 {
-    /// <summary>
-    /// Interaktionslogik für MandelbrotSet.xaml
-    /// </summary>
+    public interface IMandelbrotSetViewModel
+    {
+        double RealStart { get; set; }
+        double RealEnd { get; set; }
+        double ImaginaryStart { get; set; }
+        double ImaginaryEnd { get; set; }
+
+        Command<MouseDragEvent> OnDrag { get; }
+    }
+
+    public class MouseDragEvent : EventArgs
+    {
+        public double DeltaX { get; set; }
+        public double DeltaY { get; set; }
+
+        public MouseDragEvent(double x, double y)
+        {
+            DeltaX = x;
+            DeltaY = y;
+        }
+    }
+
     public partial class MandelbrotSetView : UserControl
     {
         #region DependencyProperties
@@ -83,6 +104,7 @@ namespace MandelbrotSet
             var ImageArr = new byte[height * nStride];
 
             //Calculate stepsize
+            var map = MandelbrotHelper.Generate2DMap(width, height, RealStart, RealEnd, ImaginaryStart, ImaginaryEnd);
             var dre = (RealEnd - RealStart) / width;
             var dim = (ImaginaryEnd - ImaginaryStart) / height;
             for (var x = 0; x < width; x++)
@@ -90,9 +112,7 @@ namespace MandelbrotSet
                 for (var y = 0; y < height; y++)
                 {
                     var index = (y * width + x) * 4;
-                    
-                    var c = new Complex(RealStart + dre * x, ImaginaryStart + dim * y);
-                    var m = MandelbrotHelper.GetIterations(c);
+                    var m = map[y][x];
                     var t = (255 * m / MandelbrotHelper.MaximumIterations);
                     var color = 255 - (int)(m * 255.0 / MandelbrotHelper.MaximumIterations);
 
@@ -109,6 +129,53 @@ namespace MandelbrotSet
 
             //Push your bitmap to Xaml Image
             Display.Source = BmpToWriteOn;
+        }
+
+        private bool dragging;
+        private Point dragStart;
+
+        private void Display_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            dragging = true;
+            dragStart = e.GetPosition(this);
+        }
+
+        private void Display_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            dragging = false;
+        }
+
+        private void Display_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+            var vm = (IMandelbrotSetViewModel)DataContext;
+            var dragEventArgs = CreateEvent(dragStart, e.GetPosition(this));
+            if (vm.OnDrag != null && vm.OnDrag.CanExecute(dragEventArgs))
+                vm.OnDrag.Execute(dragEventArgs);
+        }
+
+        private void Display_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!dragging)
+                return;
+
+            var currPosition = e.GetPosition(this);
+            var vm = (IMandelbrotSetViewModel)DataContext;
+            var dragEventArgs = CreateEvent(dragStart, currPosition);
+
+            if (vm.OnDrag == null || !vm.OnDrag.CanExecute(dragEventArgs))
+                return;
+
+            vm.OnDrag.Execute(dragEventArgs);
+            dragStart = currPosition;
+        }
+
+        private MouseDragEvent CreateEvent(Point start, Point end)
+        {
+            var dx = end.X - start.X;
+            var dy = end.Y - start.Y;
+
+            return new MouseDragEvent(dx / ActualWidth, dy / ActualHeight);
         }
     }
 }

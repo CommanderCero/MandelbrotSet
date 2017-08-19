@@ -11,15 +11,8 @@ using MandelbrotSet.Annotations;
 
 namespace MandelbrotSet
 {
-    public interface IMandelbrotViewModel
-    {
-        double RealStart { get; set; }
-        double RealEnd { get; set; }
-        double ImaginaryStart { get; set; }
-        double ImaginaryEnd { get; set; }
-    }
 
-    public class MandelbrotViewModel : IMandelbrotViewModel, INotifyPropertyChanged
+    public class MandelbrotViewModel : IMandelbrotSetViewModel, INotifyPropertyChanged
     {
         #region Properties
         private double realStart = -2, realEnd = 1, imaginaryStart = -1, imaginaryEnd = 1;
@@ -44,11 +37,31 @@ namespace MandelbrotSet
             get => imaginaryEnd;
             set { imaginaryEnd = value; OnPropertyChanged(nameof(ImaginaryEnd)); }
         }
-        #endregion
-        
-        public ICommand click = new Command<object>(val => true, val => MessageBox.Show("Hallo Welt " + val));
 
-        public ICommand Click => click;
+
+
+        #endregion
+
+        public Command<MouseDragEvent> OnDrag { get; }
+
+        private int counter = 0;
+        public MandelbrotViewModel()
+        {
+            //OnDrag = new Command<MouseDragEvent>(
+            //    dragEvent =>
+            //    {
+            //        return counter++ % 5 == 0;
+            //    },
+            //    dragEvent =>
+            //    {
+            //        double width = RealEnd - RealStart;
+            //        double height = ImaginaryEnd - ImaginaryStart;
+            //        RealStart -= width * dragEvent.DeltaX;
+            //        RealEnd -= width * dragEvent.DeltaX;
+            //        ImaginaryStart -= height * dragEvent.DeltaY;
+            //        ImaginaryEnd -= height * dragEvent.DeltaY;
+            //    });
+        }
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

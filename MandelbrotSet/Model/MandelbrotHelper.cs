@@ -27,5 +27,23 @@ namespace MandelbrotSet.Model
 
             return n;
         }
+
+        public static int[][] Generate2DMap(int width, int height, double realStart, double realEnd, double imaginaryStart, double imaginaryEnd)
+        {
+            var dx = (realEnd - realStart) / width;
+            var dy = (imaginaryEnd - imaginaryStart) / height;
+
+            var arr = new int[height][];
+            for (var y = 0; y < height; y++)
+            {
+                arr[y] = new int[width];
+                for (var x = 0; x < width; x++)
+                {
+                    arr[y][x] = GetIterations(new Complex(realStart + dx * x, imaginaryStart + dy * y));
+                }
+            }
+
+            return arr;
+        }
     }
 }

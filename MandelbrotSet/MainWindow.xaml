@@ -7,18 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="940">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="50"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
         <local:MandelbrotSetView Grid.Column="0" x:Name="MandelbrotSetView" 
-                                 RealStart="{Binding ElementName=RealStart}" 
-                                 RealEnd="{Binding ElementName=RealEnd}"
-                                 ImaginaryStart="{Binding ElementName=ImaginaryStart}"
-                                 ImaginaryEnd="{Binding ElementName=ImaginaryEnd}"
-                                 MouseDown="{Binding Click}">
+                                 RealStart="{Binding RealStart}" 
+                                 RealEnd="{Binding RealEnd}"
+                                 ImaginaryStart="{Binding ImaginaryStart}"
+                                 ImaginaryEnd="{Binding ImaginaryEnd}">
         </local:MandelbrotSetView>
-        <Button Grid.Column="1">Hallo</Button>
     </Grid>
 </Window>
