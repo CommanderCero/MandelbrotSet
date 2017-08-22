@@ -38,11 +38,17 @@ namespace MandelbrotSet
             //    });
         }
 
+        public void Move()
+        {
+            Map.Move(1, 0);
+            OnPropertyChanged(nameof(Map));
+        }
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

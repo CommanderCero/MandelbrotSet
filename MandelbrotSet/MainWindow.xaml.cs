@@ -26,5 +26,11 @@ namespace MandelbrotSet
         {
             InitializeComponent();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var vm = (MandelbrotViewModel) DataContext;
+            vm.Move();
+        }
     }
 }
