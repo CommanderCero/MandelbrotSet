@@ -39,44 +39,7 @@ namespace MandelbrotSet.Model
 
         public void Move(double dx, double dy)
         {
-            var stepSizeX = (RealEnd - RealStart) / MapWidth;
-            var stepSizeY = (ImaginaryEnd - ImaginaryStart) / MapHeight;
             
-            //Remove excess
-            dx -= dx % stepSizeX;
-            dy -= dy % stepSizeY;
-
-            var newRealStart = RealStart + dx;
-            var newRealEnd = RealEnd + dx;
-            var newImaginaryStart = ImaginaryStart + dy;
-            var newImaginaryEnd = ImaginaryEnd + dy;
-            
-            var newArr = new int[MapHeight][];
-            var copyPosition = (int)(dx < 0 ? 0 : dx - 1);
-            var calculatePosition = (int)(dx > 0 ? 0 : MapHeight - dx - 1);
-            for (var y = 0; y < dx / stepSizeX; y++)
-            {
-                newArr[calculatePosition + y] = new int[MapWidth];
-                for (var x = 0; x < MapWidth; x++)
-                {
-                    newArr[y][x] = GetIterations(new Complex(newRealStart + stepSizeX * x, newImaginaryStart + stepSizeY * y));
-                }
-            }
-
-            for (var y = 0; y < MapHeight - dx - 1; y++)
-            {
-                newArr[copyPosition + y] = new int[MapWidth];
-                for (var x = 0; x < MapWidth; x++)
-                {
-                    newArr[y][x] = Map[y][x];
-                }
-            }
-
-            RealStart = newRealStart;
-            RealEnd = newRealEnd;
-            ImaginaryStart = newImaginaryStart;
-            ImaginaryEnd = newImaginaryEnd;
-            Map = newArr;
         }
 
         private void GenerateMap()

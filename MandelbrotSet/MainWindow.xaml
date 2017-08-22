@@ -11,11 +11,7 @@
         <VM:MandelbrotViewModel />
     </Window.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button Click="ButtonBase_OnClick">Press me you slut</Button>
-        <local:MandelbrotSetView Grid.Row="1" x:Name="MandelbrotSetView" Map="{Binding Map}"/>
+        <local:MandelbrotSetView Grid.Column="0" x:Name="MandelbrotSetView" Map="{Binding Map}">
+        </local:MandelbrotSetView>
     </Grid>
 </Window>

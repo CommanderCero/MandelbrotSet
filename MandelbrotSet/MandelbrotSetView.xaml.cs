@@ -36,7 +36,7 @@ namespace MandelbrotSet
             DependencyProperty.Register("Map", typeof(MandelbrotMap), typeof(MandelbrotSetView), new PropertyMetadata(null, PropertyChangedCallback));
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            if(dependencyObject is MandelbrotSetView obj && obj.IsLoaded)
+            if(dependencyObject is MandelbrotSetView obj)
             {
                 obj.Render();
             }
@@ -60,8 +60,10 @@ namespace MandelbrotSet
             Render();
         }
 
-        public void Render()
+        private void Render()
         {
+            if (!IsLoaded)
+                return;
             if (Map == null)
             {
                 Display.Source = null;
