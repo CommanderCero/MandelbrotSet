@@ -43,7 +43,7 @@ namespace MandelbrotSet
 
         public void Move()
         {
-            map.Move(1, 0);
+            map.Move(-0.2, 0);
             OnPropertyChanged(nameof(Map));
         }
 

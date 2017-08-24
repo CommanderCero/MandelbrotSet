@@ -46,36 +46,32 @@ namespace MandelbrotSet.Model
             dx -= dx % stepSizeX;
             dy -= dy % stepSizeY;
 
-            var newRealStart = RealStart + dx;
-            var newRealEnd = RealEnd + dx;
-            var newImaginaryStart = ImaginaryStart + dy;
-            var newImaginaryEnd = ImaginaryEnd + dy;
-            
+            var pixeldx = (int)(dx / stepSizeX);
             var newArr = new int[MapHeight][];
-            var copyPosition = (int)(dx < 0 ? 0 : dx - 1);
-            var calculatePosition = (int)(dx > 0 ? 0 : MapHeight - dx - 1);
-            for (var y = 0; y < dx / stepSizeX; y++)
+            if (pixeldx > 0)
             {
-                newArr[calculatePosition + y] = new int[MapWidth];
-                for (var x = 0; x < MapWidth; x++)
+                for (var i = 0; i < MapHeight; i++)
                 {
-                    newArr[y][x] = GetIterations(new Complex(newRealStart + stepSizeX * x, newImaginaryStart + stepSizeY * y));
+                    newArr[i] = new int[MapWidth];
+                    for (var x = pixeldx; x < MapWidth; x++)
+                    {
+                        newArr[i][x - pixeldx] = Map[i][x];
+                    }
                 }
             }
-
-            for (var y = 0; y < MapHeight - dx - 1; y++)
+            else
             {
-                newArr[copyPosition + y] = new int[MapWidth];
-                for (var x = 0; x < MapWidth; x++)
+                for (var i = 0; i < MapHeight; i++)
                 {
-                    newArr[y][x] = Map[y][x];
+                    newArr[i] = new int[MapWidth];
+                    for (var x = 0; x < MapWidth - pixeldx; x++)
+                    {
+                        newArr[i][pixeldx + x - 1] = Map[i][x];
+                    }
                 }
             }
+            
 
-            RealStart = newRealStart;
-            RealEnd = newRealEnd;
-            ImaginaryStart = newImaginaryStart;
-            ImaginaryEnd = newImaginaryEnd;
             Map = newArr;
         }
 
