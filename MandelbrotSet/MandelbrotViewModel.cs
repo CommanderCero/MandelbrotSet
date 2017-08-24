@@ -13,7 +13,7 @@ using MandelbrotSet.Model;
 namespace MandelbrotSet
 {
 
-    public class MandelbrotViewModel : IMandelbrotSetViewModel, INotifyPropertyChanged
+    public class MandelbrotViewModel : INotifyPropertyChanged
     {
         public MandelbrotMap Map { get; set; }
 

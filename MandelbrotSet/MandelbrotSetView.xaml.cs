@@ -10,13 +10,6 @@ using MandelbrotSet.Model;
 
 namespace MandelbrotSet
 {
-    public interface IMandelbrotSetViewModel
-    {
-        MandelbrotMap Map { get; }
-
-        Command<MouseDragEvent> OnDrag { get; }
-    }
-
     public class MouseDragEvent : EventArgs
     {
         public double DeltaX { get; set; }
