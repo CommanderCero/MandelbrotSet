@@ -26,7 +26,12 @@ namespace MandelbrotSet
     {
         #region DependencyProperties
         public static readonly DependencyProperty MapProperty = 
-            DependencyProperty.Register("Map", typeof(MandelbrotMap), typeof(MandelbrotSetView), new PropertyMetadata(null, PropertyChangedCallback));
+            DependencyProperty.Register("Map", typeof(int[][]), typeof(MandelbrotSetView), new PropertyMetadata(null, PropertyChangedCallback));
+        public static readonly DependencyProperty MapWidthProperty =
+            DependencyProperty.Register("MapWidth", typeof(int), typeof(MandelbrotSetView), new PropertyMetadata(0, PropertyChangedCallback));
+        public static readonly DependencyProperty MapHeightProperty =
+            DependencyProperty.Register("MapHeight", typeof(int), typeof(MandelbrotSetView), new PropertyMetadata(0, PropertyChangedCallback));
+
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             if(dependencyObject is MandelbrotSetView obj && obj.IsLoaded)
@@ -35,9 +40,21 @@ namespace MandelbrotSet
             }
         }
 
-        public MandelbrotMap Map
+        public int[][] Map
         {
-            get => (MandelbrotMap) GetValue(MapProperty);
+            get => (int[][]) GetValue(MapProperty);
+            set => SetValue(MapProperty, value);
+        }
+
+        public int MapWidth
+        {
+            get => (int)GetValue(MapWidthProperty);
+            set => SetValue(MapProperty, value);
+        }
+
+        public int MapHeight
+        {
+            get => (int)GetValue(MapHeightProperty);
             set => SetValue(MapProperty, value);
         }
         #endregion
@@ -62,19 +79,17 @@ namespace MandelbrotSet
             }
 
             //Initialize image and stuff
-            var width = Map.MapWidth;
-            var height = Map.MapHeight;
-            var nStride = (width * PixelFormats.Bgra32.BitsPerPixel + 7) / 8;
-            var ImageDimentions = new Int32Rect(0, 0, width, height);
-            var ImageArr = new byte[height * nStride];
+            var nStride = (MapWidth * PixelFormats.Bgra32.BitsPerPixel + 7) / 8;
+            var ImageDimentions = new Int32Rect(0, 0, MapWidth, MapHeight);
+            var ImageArr = new byte[MapHeight * nStride];
 
             //Calculate stepsize
-            var map = Map.Map;
-            for (var x = 0; x < width; x++)
+            var map = Map;
+            for (var x = 0; x < MapWidth; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (var y = 0; y < MapHeight; y++)
                 {
-                    var index = (y * width + x) * 4;
+                    var index = (y * MapWidth + x) * 4;
                     var m = map[y][x];
                     var t = (255 * m / MandelbrotMap.MaximumIterations);
                     var color = 255 - (int)(m * 255.0 / MandelbrotMap.MaximumIterations);
@@ -87,7 +102,7 @@ namespace MandelbrotSet
             }
 
             //Push your data to a Bitmap
-            var BmpToWriteOn = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
+            var BmpToWriteOn = new WriteableBitmap(MapWidth, MapHeight, 96, 96, PixelFormats.Bgra32, null);
             BmpToWriteOn.WritePixels(ImageDimentions, ImageArr, nStride, 0, 0);
 
             //Push your bitmap to Xaml Image
@@ -111,7 +126,7 @@ namespace MandelbrotSet
         private void Display_OnMouseLeave(object sender, MouseEventArgs e)
         {
             dragging = false;
-            var vm = (IMandelbrotSetViewModel)DataContext;
+            var vm = (MandelbrotViewModel)DataContext;
             var dragEventArgs = CreateEvent(dragStart, e.GetPosition(this));
             if (vm.OnDrag != null && vm.OnDrag.CanExecute(dragEventArgs))
                 vm.OnDrag.Execute(dragEventArgs);
@@ -123,7 +138,7 @@ namespace MandelbrotSet
                 return;
 
             var currPosition = e.GetPosition(this);
-            var vm = (IMandelbrotSetViewModel)DataContext;
+            var vm = (MandelbrotViewModel)DataContext;
             var dragEventArgs = CreateEvent(dragStart, currPosition);
 
             if (vm.OnDrag == null || !vm.OnDrag.CanExecute(dragEventArgs))

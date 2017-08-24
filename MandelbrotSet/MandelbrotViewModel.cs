@@ -12,16 +12,19 @@ using MandelbrotSet.Model;
 
 namespace MandelbrotSet
 {
-
     public class MandelbrotViewModel : INotifyPropertyChanged
     {
-        public MandelbrotMap Map { get; set; }
+        private MandelbrotMap map;
+
+        public int[][] Map => map.Map;
+        public int MapWidth => map.MapWidth;
+        public int MapHeight => map.MapHeight;
 
         public Command<MouseDragEvent> OnDrag { get; }
 
         public MandelbrotViewModel()
         {
-            Map = new MandelbrotMap(900, 700, -2, 1, -1, 1);
+            map = new MandelbrotMap(900, 700, -2, 1, -1, 1);
             //OnDrag = new Command<MouseDragEvent>(
             //    dragEvent =>
             //    {
@@ -40,7 +43,7 @@ namespace MandelbrotSet
 
         public void Move()
         {
-            Map.Move(1, 0);
+            map.Move(1, 0);
             OnPropertyChanged(nameof(Map));
         }
 

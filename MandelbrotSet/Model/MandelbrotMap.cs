@@ -13,7 +13,7 @@ namespace MandelbrotSet.Model
         #region Variables
         public static int MaximumIterations = 80;
 
-        public int[][] Map { get; private set; }
+        public int[][] Map { get; set; }
 
         public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
