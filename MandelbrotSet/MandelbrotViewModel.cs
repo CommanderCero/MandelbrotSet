@@ -41,9 +41,9 @@ namespace MandelbrotSet
             //    });
         }
 
-        public void Move()
+        public void Move(double x)
         {
-            map.Move(-0.2, 0);
+            map.Move(0, x);
             OnPropertyChanged(nameof(Map));
         }
 

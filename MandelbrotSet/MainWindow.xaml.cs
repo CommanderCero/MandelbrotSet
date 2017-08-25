@@ -27,10 +27,16 @@ namespace MandelbrotSet
             InitializeComponent();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        public void RightClick(object sender, RoutedEventArgs e)
         {
-            var vm = (MandelbrotViewModel) DataContext;
-            vm.Move();
+            var vm = (MandelbrotViewModel)DataContext;
+            vm.Move(0.2);
+        }
+
+        public void LeftClick(object sender, RoutedEventArgs e)
+        {
+            var vm = (MandelbrotViewModel)DataContext;
+            vm.Move(-0.2);
         }
     }
 }
