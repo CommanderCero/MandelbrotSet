@@ -48,12 +48,16 @@ namespace MandelbrotSet.Model
 
             RealStart += dx;
             RealEnd += dx;
+            ImaginaryStart += dy;
+            ImaginaryEnd += dy;
 
             var pixeldx = (int)(dx / stepSizeX);
             var pixeldy = (int)(dy / stepSizeY);
             var newArr = new int[MapHeight][];
             for (var i = 0; i < newArr.Length; i++)
                 newArr[i] = new int[MapWidth];
+
+            //TODO Refactor Move
             #region dx
             if (pixeldx > 0)
             {
@@ -98,25 +102,25 @@ namespace MandelbrotSet.Model
                 }
             }
             #endregion
-
+            
             if (pixeldy > 0)
             {
-                pixeldy = Math.Abs(pixeldx);
+                pixeldy = Math.Abs(pixeldy);
                 //Calculate new
-                for (var y = 0; y < MapHeight; y++)
+                for (var x = 0; x < MapWidth; x++)
                 {
-                    for (var x = MapWidth - pixeldy; x < MapWidth; x++)
+                    for (var y = MapHeight - pixeldy; y < MapHeight; y++)
                     {
                         newArr[y][x] = GetIterations(new Complex(RealStart + x * stepSizeX, ImaginaryStart + y * stepSizeY));
                     }
                 }
 
                 //Copy
-                for (var y = 0; y < MapHeight; y++)
+                for (var x = 0; x < MapWidth; x++)
                 {
-                    for (var x = pixeldy; x < MapWidth; x++)
+                    for (var y = pixeldy; y < MapHeight; y++)
                     {
-                        newArr[y][x - pixeldy] = Map[y][x];
+                        newArr[y - pixeldy][x] = Map[y][x];
                     }
                 }
             }
@@ -124,20 +128,20 @@ namespace MandelbrotSet.Model
             {
                 pixeldy = Math.Abs(pixeldy);
                 //Calculate new
-                for (var y = 0; y < MapHeight; y++)
+                for (var x = 0; x < MapWidth; x++)
                 {
-                    for (var x = 0; x < pixeldy; x++)
+                    for (var y = 0; y < pixeldy; y++)
                     {
                         newArr[y][x] = GetIterations(new Complex(RealStart + x * stepSizeX, ImaginaryStart + y * stepSizeY));
                     }
                 }
 
                 //Copy
-                for (var y = 0; y < MapHeight; y++)
+                for (var x = 0; x < MapWidth; x++)
                 {
-                    for (var x = 0; x < MapWidth - pixeldy; x++)
+                    for (var y = 0; y < MapHeight - pixeldy; y++)
                     {
-                        newArr[y][pixeldy + x] = Map[y][x];
+                        newArr[y + pixeldy][x] = Map[y][x];
                     }
                 }
             }

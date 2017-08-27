@@ -20,8 +20,6 @@ namespace MandelbrotSet
         public int MapWidth => map.MapWidth;
         public int MapHeight => map.MapHeight;
 
-        public Command<MouseDragEvent> OnDrag { get; }
-
         public MandelbrotViewModel()
         {
             map = new MandelbrotMap(900, 700, -2, 1, -1, 1);
@@ -44,6 +42,7 @@ namespace MandelbrotSet
         public void Move(double x)
         {
             map.Move(0, x);
+            map.Move(x, 0);
             OnPropertyChanged(nameof(Map));
         }
 
