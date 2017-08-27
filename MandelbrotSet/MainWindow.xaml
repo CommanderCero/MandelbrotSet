@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MandelbrotSet"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="940">
+        Title="MainWindow" Height="800" Width="940">
     <Window.DataContext>
         <local:MandelbrotViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <local:MandelbrotBitmapConverter x:Key="MandelbrotBitmapConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
@@ -22,7 +25,14 @@
             <Button Click="LeftClick">Left</Button>
             <Button Click="RightClick" Grid.Column="1">Right</Button>
         </Grid>
-        
-        <local:MandelbrotSetView Grid.Row="1" x:Name="MandelbrotSetView" Map="{Binding Map}" MapWidth="{Binding MapWidth}" MapHeight="{Binding MapHeight}"/>
+        <Image Grid.Row="1">
+            <Image.Source>
+                <MultiBinding Converter="{StaticResource MandelbrotBitmapConverter}">
+                    <Binding Path="Map"></Binding>
+                    <Binding Path="MapWidth"></Binding>
+                    <Binding Path="MapHeight"></Binding>
+                </MultiBinding>
+            </Image.Source>
+        </Image>
     </Grid>
 </Window>
