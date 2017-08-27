@@ -182,7 +182,7 @@ namespace MandelbrotSet.Model
                 var newImag = 2 * imag * real + imagC;
                 real = newReal;
                 imag = newImag;
-                n++;
+                ++n;
             }
 
             return n;

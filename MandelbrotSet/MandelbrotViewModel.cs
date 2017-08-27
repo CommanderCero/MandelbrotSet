@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using MandelbrotSet.Annotations;
+﻿using MandelbrotSet.Annotations;
 using MandelbrotSet.Model;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using Point = System.Windows.Point;
 
 namespace MandelbrotSet
 {
@@ -19,6 +14,13 @@ namespace MandelbrotSet
         public int[][] Map => map.Map;
         public int MapWidth => map.MapWidth;
         public int MapHeight => map.MapHeight;
+
+        public void OnDrag(Point vec)
+        {
+            map.Move(0, -vec.Y / MapHeight);
+            map.Move(-vec.X / MapWidth, 0);
+            OnPropertyChanged(nameof(Map));
+        }
 
         public MandelbrotViewModel()
         {

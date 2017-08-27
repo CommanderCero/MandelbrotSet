@@ -13,19 +13,10 @@
         <local:MandelbrotBitmapConverter x:Key="MandelbrotBitmapConverter" />
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button Click="LeftClick">Left</Button>
-            <Button Click="RightClick" Grid.Column="1">Right</Button>
-        </Grid>
-        <Image Grid.Row="1">
+        <Image 
+               MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" 
+               MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp_"
+               MouseMove="UIElement_OnMouseMove">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource MandelbrotBitmapConverter}">
                     <Binding Path="Map"></Binding>

@@ -27,16 +27,33 @@ namespace MandelbrotSet
             InitializeComponent();
         }
 
-        public void RightClick(object sender, RoutedEventArgs e)
+        private Point startPoint;
+        private bool dragging;
+        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var vm = (MandelbrotViewModel)DataContext;
-            vm.Move(0.2);
+            startPoint = e.GetPosition((IInputElement)sender);
+            dragging = true;
         }
 
-        public void LeftClick(object sender, RoutedEventArgs e)
+        private void UIElement_OnMouseLeftButtonUp_(object sender, MouseButtonEventArgs e)
         {
-            var vm = (MandelbrotViewModel)DataContext;
-            vm.Move(-0.2);
+            var endPoint = e.GetPosition((IInputElement) sender);
+            ((MandelbrotViewModel)DataContext).OnDrag(new Point(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y));
+            dragging = false;
+        }
+
+        private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!dragging)
+                return;
+            
+            var endPoint = e.GetPosition((IInputElement)sender);
+            if (endPoint.Equals(startPoint))
+                return;
+
+            ((MandelbrotViewModel)DataContext).OnDrag(new Point(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y));
+            startPoint = endPoint;
+            
         }
     }
 }
