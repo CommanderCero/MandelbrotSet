@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MandelbrotSet", "MandelbrotSet\MandelbrotSet.csproj", "{269DE080-55B4-49C4-9D3F-F39B85414C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Area51", "Area51\Area51.csproj", "{D2CC70CA-1932-428A-9BD0-AC31A225962F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +15,11 @@ Global
 		{269DE080-55B4-49C4-9D3F-F39B85414C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{269DE080-55B4-49C4-9D3F-F39B85414C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{269DE080-55B4-49C4-9D3F-F39B85414C1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2CC70CA-1932-428A-9BD0-AC31A225962F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2CC70CA-1932-428A-9BD0-AC31A225962F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2CC70CA-1932-428A-9BD0-AC31A225962F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2CC70CA-1932-428A-9BD0-AC31A225962F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2FA1191-E56B-451F-BF90-0010C56695D8}
 	EndGlobalSection
 EndGlobal
